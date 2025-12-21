@@ -9,10 +9,10 @@ class aGame
 {
 public:
 	ExMessage* m = new ExMessage;
-	aGame() :ifWin(false),ifEnd(false) {};//默认构造函数
-	aGame(gameSettings set) ;//从配置创建
 	aGame(gameSettings set, int x, int y,int gameLevel);
-	aGame(std::wstring lastgamename);//从残局创建
+	aGame(gameSettings set);//从配置创建游戏
+	aGame(std::wstring lastgamename);//从残局创建游戏
+	aGame(aGame* ori);//复制构造函数
 	~aGame() {
 		delete ball;
 		delete baffle;
@@ -20,7 +20,7 @@ public:
 		delete msg;
 	}
 	void gameDraw(std::wstring setname) ;//绘制一局游戏内的物品
-	void gameRun() ;//一局游戏运行
+	void gameRun() ;//一局游戏运行
 	void SetMapBrick(brickType t, int x, int y) { map->setBrick(t, x, y); }//修改地图砖块
 	bool ifend() { return ifEnd; }
 	bool ifwin() { return ifWin; }
@@ -34,8 +34,10 @@ public:
 	Baffle* baffle;//挡板
 	Map* map;//砖块地图，可以用于加载残局
 	Button stop=Button(WindowWidth/10*9,WindowHeight/10*9,WindowWidth/20,WindowHeight/20);
+	Button restart=Button(WindowWidth/10*9,WindowHeight/20*15,WindowWidth/20,WindowHeight/20);
 
 	bool ifstop() { return ifStop; }
+	bool ifrestart() { return ifRestart; }
 	void nostop() { ifStop = false; }
 	int getblood() { return blood; }
 
@@ -76,10 +78,10 @@ private:
 	bool ifEnd = false;
 	bool ifWin = false;//是否在通关状态
 	bool ifStop = false;
+	bool ifRestart = false;
 	int level;//关卡
-	int xBlockNum = 18;//横向格子数
-	int yBlockNum = 9;//纵向格子数（注：因为要放挡板和小球，只有上半部分才会被砖占着）
-
+	int DefaultXBlockNum = 9;//横向格子数
+	int DefaultYBlockNum = 5;//纵向格子数的一半（注："一半"是因为主绘图区下面要放挡板和小球，只有上半部分才会被砖占着）
 	int displayX = WallWidth * 2 + MapWidth + 20;//信息显示区左上角x坐标
 };
 
