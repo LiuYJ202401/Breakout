@@ -399,10 +399,15 @@ void GameManager::Win() {
 			buttons.pop_back();
 		}
 		check = false;
-		Button* next = new Button(WindowWidth / 2, WindowHeight / 2, WindowWidth / 3, WindowHeight / 12);
+		Button* next = new Button(WindowWidth / 4, WindowHeight / 2, WindowWidth / 5, WindowHeight / 12);
 		next->setString(L"下一关");
 		next->setid(0);
 		buttons.push_back(next);
+
+		Button* back = new Button(WindowWidth / 4*3, WindowHeight / 2, WindowWidth / 5, WindowHeight / 12);
+		back->setString(L"返回主菜单");
+		back->setid(1);
+		buttons.push_back(back);
 	}
 	if (peekmessage(m, EX_MOUSE)) {
 		if (m->message == WM_LBUTTONDOWN) {
@@ -411,6 +416,7 @@ void GameManager::Win() {
 				if (i->ifIn(x, y)) {
 					switch (i->uid()) {
 					case 0: { check = true; state = 3; break; }
+					case 1: { check = true; state = 0; break; }
 					}
 					break;
 				}

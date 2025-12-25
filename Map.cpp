@@ -2,10 +2,10 @@
 #include "Brick.h"
 #include "Ball.h"
 #include <vector>
-Map::Map(int seed,int xBlockNum , int yBlockNum ,int level) :ifempty(false) {//地图（默认为9*5），砖的类型随gamelevel变化。
+Map::Map(int seed,int xBlockNum , int yBlockNum ,int level) :ifempty(false) {//地图（默认为9*18），砖的类型随gamelevel变化。
 	this->xBlockNum = xBlockNum;
 	this->yBlockNum = yBlockNum;
-	this->BlockWidth = MapWidth / xBlockNum;
+	this->BlockWidth = MapWidth / (xBlockNum);
 	this->BlockHeight = MapHeight / yBlockNum;
 	this->BrickHeight = BlockHeight * 9 / 10;
 	this->BrickWidth = BlockWidth * 9 / 10;

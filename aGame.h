@@ -80,8 +80,8 @@ private:
 	bool ifStop = false;
 	bool ifRestart = false;
 	int level;//关卡
-	int DefaultXBlockNum = 9;//横向格子数
-	int DefaultYBlockNum = 5;//纵向格子数的一半（注："一半"是因为主绘图区下面要放挡板和小球，只有上半部分才会被砖占着）
+	int DefaultXBlockNum = 18;//横向格子数
+	int DefaultYBlockNum = 9;//纵向格子数
 	int displayX = WallWidth * 2 + MapWidth + 20;//信息显示区左上角x坐标
 };
 
