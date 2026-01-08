@@ -300,14 +300,16 @@ void GameManager::Start() {
 		if (nextlevel) {
 			nextlevel = false;
 			thisgame->nextLevel();
+			delete snapshot;
+			snapshot = new aGame(thisgame);
 		}
 		if (newgame) {
 			newgame = false;
 			if (ifLastgame) { thisgame = startAGame(lastgamename); }
 			else { thisgame = startAGame(); }
-			
-
-		}//创建一局游戏(根据配置文件或残局)
+			delete snapshot;
+			snapshot = new aGame(thisgame);
+		}
 	}
 	//进行游戏
 	if (thisgame->ifend()) {//游戏结束，移动到失败界面
@@ -320,11 +322,19 @@ void GameManager::Start() {
 		check = true;
 		nextlevel = true;
 	}
+	else if (thisgame->ifrestart()) {//若重新开始本关
+		delete thisgame;
+		thisgame = new aGame(snapshot);
+	}
 	else {
 		thisgame->gameRun();
 		if ((GetAsyncKeyState('P') & 0x8000)||thisgame->ifstop()) {
 			state = 4;
 			check = true;
+		}
+		if (GetAsyncKeyState('R') & 0x8000) {//重玩本关
+			delete thisgame;
+			thisgame = new aGame(snapshot);
 		}
 	}
 }
@@ -389,10 +399,15 @@ void GameManager::Win() {
 			buttons.pop_back();
 		}
 		check = false;
-		Button* next = new Button(WindowWidth / 2, WindowHeight / 2, WindowWidth / 3, WindowHeight / 12);
+		Button* next = new Button(WindowWidth / 4, WindowHeight / 2, WindowWidth / 5, WindowHeight / 12);
 		next->setString(L"下一关");
 		next->setid(0);
 		buttons.push_back(next);
+
+		Button* back = new Button(WindowWidth / 4*3, WindowHeight / 2, WindowWidth / 5, WindowHeight / 12);
+		back->setString(L"返回主菜单");
+		back->setid(1);
+		buttons.push_back(back);
 	}
 	if (peekmessage(m, EX_MOUSE)) {
 		if (m->message == WM_LBUTTONDOWN) {
@@ -401,6 +416,7 @@ void GameManager::Win() {
 				if (i->ifIn(x, y)) {
 					switch (i->uid()) {
 					case 0: { check = true; state = 3; break; }
+					case 1: { check = true; state = 0; break; }
 					}
 					break;
 				}
@@ -821,7 +837,7 @@ bool GameManager::createLastgame(bool ready) {
 		thisgame->serialize(o);
 		o.close();
 	}
-	lastgamename = name;
+	lastgamename = name + L".end";
 	ifLastgame = true;
 	return true;
 }

@@ -11,11 +11,14 @@ class Map
 public:
 	Map():ifempty(false) {};
 	Map(int seed,int xBlockNum ,int yBlockNum , int level);
-	void mapDraw();
+	Map(Map* ori);//复制构造函数
+    void mapDraw();
     void setBrick(brickType t, int x, int y) { bricks[x][y].setType(t); }
 	bool is_empty();//判断地图上是否还有可摧毁砖块
 	void check(Ball* ball,aGame* game);//检测球与砖块的碰撞并处理
 	void clear();//清图，调试用。
+    int getXBlockNum() { return xBlockNum; };
+    int getYBlockNum() { return yBlockNum; };
 
     void serialize(std::ofstream& out) const {
         out.write(reinterpret_cast<const char*>(&xBlockNum), sizeof(xBlockNum));

@@ -22,9 +22,10 @@ class GameManager
 
 	bool newgame = true;//是创建一局游戏还是继续游戏
 	bool nextlevel = false;//是否进入下一关
-	aGame* startAGame() ;//依据配置或残局创建新一局游戏，返回创建的游戏类的指针
-	aGame* startAGame(std::wstring last);//依据配置或残局创建新一局游戏，返回创建的游戏类的指针
+	aGame* startAGame() ;//依据配置创建新一局游戏，返回创建的游戏类的指针
+	aGame* startAGame(std::wstring last);//依据残局创建新一局游戏，返回创建的游戏类的指针
 	aGame* thisgame;//指向当前游戏的指针
+	aGame* snapshot;//游戏状态快照（以便实现重玩本关功能）
 
 	void Menudraw();//主菜单绘制
 	void MenuCheck();//监测在主页面的操作并做出反映

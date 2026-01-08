@@ -2,10 +2,10 @@
 #include "Brick.h"
 #include "Ball.h"
 #include <vector>
-Map::Map(int seed,int xBlockNum , int yBlockNum ,int level) :ifempty(false) {//µØÍ¼£¨Ä¬ÈÏÎª10*10£©£¬×©µÄÀàĞÍËægamelevel±ä»¯¡£
+Map::Map(int seed,int xBlockNum , int yBlockNum ,int level) :ifempty(false) {//µØÍ¼£¨Ä¬ÈÏÎª9*18£©£¬×©µÄÀàĞÍËægamelevel±ä»¯¡£
 	this->xBlockNum = xBlockNum;
 	this->yBlockNum = yBlockNum;
-	this->BlockWidth = MapWidth / xBlockNum;
+	this->BlockWidth = MapWidth / (xBlockNum);
 	this->BlockHeight = MapHeight / yBlockNum;
 	this->BrickHeight = BlockHeight * 9 / 10;
 	this->BrickWidth = BlockWidth * 9 / 10;
@@ -22,6 +22,22 @@ Map::Map(int seed,int xBlockNum , int yBlockNum ,int level) :ifempty(false) {//µ
 		cur_y = WallHeight + BlockHeight / 10;
 	}
 	delete type;
+}
+
+Map::Map(Map* ori) {//¸´ÖÆ¹¹Ôìº¯Êı
+	this->xBlockNum = ori->xBlockNum;
+	this->yBlockNum = ori->yBlockNum;
+	this->BlockWidth = ori->BlockWidth;
+	this->BlockHeight = ori->BlockHeight;
+	this->BrickHeight = ori->BrickHeight;
+	this->BrickWidth = ori->BrickWidth;
+	this->ifempty = ori->ifempty;
+	for (int x = 0; x < xBlockNum; x++) {
+		this->bricks.push_back(std::vector<Brick>());
+		for (int y = 0; y < yBlockNum; y++) {
+			this->bricks[x].push_back(ori->bricks[x][y]);//¸´ÖÆ×©¿é
+		}
+	}
 }
 
 bool Map::is_empty() {//¼ì²âÊÇ·ñËùÓĞ¿ÉÒÔ±»´òµôµÄ×©¶¼±»´òµôÁË
